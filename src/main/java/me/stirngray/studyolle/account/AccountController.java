@@ -20,11 +20,9 @@ import java.net.http.HttpClient;
 @RequiredArgsConstructor
 public class AccountController {
 
-    private final AccountRepository accountRepository;
-
     private final SignUpFormValidator signUpFormValidator;
 
-    private final JavaMailSender javaMailSender;
+    private final AccountService accountService;
 
     @InitBinder("signUpForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -43,26 +41,10 @@ public class AccountController {
             return "account/sign-up";
         }
         //TODO 전달받은 signUpForm객체를 저장
-        Account account = Account.builder()
-                .nickname(signUpForm.getNickname())
-                .email(signUpForm.getEmail())
-                .password(signUpForm.getPassword())
-                .studyCreatedByWeb(true)
-                .studyEnrollmentResultByWeb(true)
-                .studyUpdateByWeb(true)
-                .build();
-
-        Account newAccount = accountRepository.save(account);
-        newAccount.generateEmailCheckToken();
-
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-
-        simpleMailMessage.setTo(newAccount.getEmail());
-        simpleMailMessage.setSubject("스터디올래, 회원 가입 인증");
-        simpleMailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() +
-                "&email=" + newAccount.getEmail());
-        javaMailSender.send(simpleMailMessage);
+        accountService.newAccount(signUpForm);
 
         return "redirect:/";
     }
+
+
 }

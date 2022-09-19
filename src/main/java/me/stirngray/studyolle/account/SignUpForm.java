@@ -1,6 +1,7 @@
 package me.stirngray.studyolle.account;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 
@@ -13,7 +14,7 @@ public class SignUpForm {
 
 
     @NotBlank
-    @Max(8)@Min(50)
+    @Length(min = 8,max = 50)
     private String password;
 
 
