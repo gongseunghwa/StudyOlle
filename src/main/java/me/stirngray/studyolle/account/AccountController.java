@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.print.attribute.standard.PresentationDirection;
 import javax.validation.Valid;
 import java.net.http.HttpClient;
+import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
 public class AccountController {
+
+    private final AccountRepository accountRepository;
 
     private final SignUpFormValidator signUpFormValidator;
 
@@ -44,6 +47,28 @@ public class AccountController {
         accountService.newAccount(signUpForm);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/check-email-token")
+    public String CheckEmailToken(String token, String email, Model model){
+        Account account = accountRepository.findByEmail(email);
+        String view ="account/checked-email";
+        if(account == null){
+            model.addAttribute("error","wrong email");
+            return view;
+        }
+
+        if(!account.getEmailCheckToken().equals(token)){
+            model.addAttribute("error","wrong token");
+            return view;
+        }
+
+        account.setEmailVerified(true);
+        account.setJoinAt(LocalDateTime.now());
+        model.addAttribute("numberOfUser", accountRepository.count());
+        model.addAttribute("nickname",account.getNickname());
+
+        return view;
     }
 
 

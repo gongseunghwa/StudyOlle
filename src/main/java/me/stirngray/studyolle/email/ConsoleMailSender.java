@@ -1,4 +1,4 @@
-package me.stirngray.studyolle;
+package me.stirngray.studyolle.email;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.extern.slf4j.XSlf4j;

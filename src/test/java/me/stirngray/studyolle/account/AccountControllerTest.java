@@ -1,4 +1,5 @@
 package me.stirngray.studyolle.account;
+import me.stirngray.studyolle.domain.Account;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -58,6 +60,12 @@ class AccountControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
+
+        Account account = accountRepository.findByEmail("keesun@email.com");
+
+        assertNotEquals(account.getPassword(),"12345678");
+        assertNotNull(account.getEmailCheckToken());
+
 
         assertTrue(accountRepository.existsByEmail("keesun@email.com"));
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
