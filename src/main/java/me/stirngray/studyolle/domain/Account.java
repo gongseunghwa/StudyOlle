@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Conditional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
+@Builder
 @Getter
 @Setter
 @EqualsAndHashCode(of="id") //연관관계가 복잡해질 떄 무한루프로 인한 스택 오버플로우가 발생 할 수 있다
@@ -57,5 +59,7 @@ public class Account {
     private boolean studyUpdateByWeb;
 
 
-
+    public void generateEmailCheckToken() {
+        this.emailCheckToken = UUID.randomUUID().toString();
+    }
 }
