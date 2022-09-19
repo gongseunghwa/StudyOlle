@@ -11,5 +11,4 @@ public class SignUpForm {
 
     private String nickname;
 
-    private String test;
 }
