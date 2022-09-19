@@ -62,4 +62,13 @@ public class Account {
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
     }
+
+    public void completeSignUp(){
+        this.joinAt = LocalDateTime.now();
+        this.emailVerified = true;
+    }
+
+    public boolean isVerifiedToken(String token) {
+        return this.emailCheckToken.equals(token);
+    }
 }
