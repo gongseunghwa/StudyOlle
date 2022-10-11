@@ -2,7 +2,6 @@ package me.stirngray.studyolle.domain;
 
 
 import lombok.*;
-import org.springframework.context.annotation.Conditional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -57,10 +56,12 @@ public class Account {
     private boolean studyUpdateByEmail;
 
     private boolean studyUpdateByWeb;
+    private LocalDateTime emailCheckTokenGeneratedAt;
 
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
+        this.emailCheckTokenGeneratedAt =LocalDateTime.now();
     }
 
     public void completeSignUp(){
@@ -70,5 +71,9 @@ public class Account {
 
     public boolean isVerifiedToken(String token) {
         return this.emailCheckToken.equals(token);
+    }
+
+    public boolean canSendConrimEmail() {
+        return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusMinutes(5));
     }
 }

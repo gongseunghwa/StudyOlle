@@ -1,33 +1,25 @@
 <!DOCTYPE html>
-    <html lang="en"
-          xmlns:th="http://www.thymeleaf.org"
-          xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments.html :: head"></head>
 <body class="bg-light">
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-    <a class="navbar-brand" href="/" th:href="@{/}">
-        <img src="/images/logo_sm.png" width="30" height="30">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
     <div th:replace="fragments.html :: main-nav"></div>
-</nav>
-
-<div class="container">
-    <div class="py-5 text-center">
-        <h2>스터디올래</h2>
+    <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
+        스터디올레 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link">계정 인증 이메일을 확인</a>하세요.
     </div>
 
-    <footer th:replace="fragments.html:: footer"></footer>
-</div>
-<script src="/node_modules/jquery/dist/jquery.min.js"></script>
-<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script type="application/javascript">
-    (function () {
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>스터디올래</h2>
+        </div>
 
-    }())
-</script>
+        <div th:replace="fragments.html :: footer"></div>
+    </div>
+    <script type="application/javascript">
+        (function () {
+
+        }())
+    </script>
 </body>
 </html>
